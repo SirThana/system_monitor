@@ -7,7 +7,7 @@ import threading
 
 
 s = socket.socket()
-serverAddress = ('127.0.0.1', 1111)
+serverAddress = ('145.28.187.180', 1111)
 s.bind(serverAddress)
 s.listen(1)
 
@@ -29,8 +29,7 @@ def main():
     threadedHandler = threading.Thread(target=connHandler, args=(s, 1)) 
     threadedHandler.start()
     while True:
-        if len(list(socketDict.keys())) > 0:
-            print(list(socketDict.keys())[-1])
+        print(socketDict)
         time.sleep(1)
 
 main()

