@@ -30,7 +30,8 @@ def main():
     threadedHandler = threading.Thread(target=connHandler, args=(s, 1)) 
     threadedHandler.start()
     while True:
-        print(list(socketDict.keys())[-1])
+        if len(list(socketDict.keys())) > 0:
+            print(list(socketDict.keys())[-1])
         time.sleep(1)
 
 main()
