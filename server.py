@@ -20,7 +20,6 @@ def connHandler(socket, x):
         try:
             conn, addr = socket.accept()
             socketDict.update({pickle.loads(conn.recv(2048)) : conn})
-            print(addr)
         except Exception as e:
             print(e)
     
