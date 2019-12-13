@@ -30,7 +30,7 @@ def main():
     threadedHandler = threading.Thread(target=connHandler, args=(s, 1)) 
     threadedHandler.start()
     while True:
-        x = 5
+        x = "jood"
         print(list(socketDict.keys())[-1])
         time.sleep(1)
 
