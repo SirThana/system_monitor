@@ -6,13 +6,15 @@ import pdb
 
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
+#TODO
+#   1.  Have the server send a command at a fixed time interval and immediately expect the ouput
 
 s = socket.socket()
 serverAddress = ('localhost', 1111)
 s.bind(serverAddress)
 s.listen(1)
 
-socketDict = {} # HOSTNAME : conn
+socketDict = {} # who : conn
 
 
 #   --> Receives a socket, Accepts connections and appends them to the socketDict
@@ -37,10 +39,15 @@ def sendCommands():
 def main():
     threadedHandler = threading.Thread(target=connHandler, args=(s, 1)) 
     threadedHandler.start()
-    #pdb.set_trace()
+
+
+    startingTime = time.time()
     while True:
+        timeDiff = time.time() - startingTime
         print(socketDict.keys())
-        sendCommands()
+        if timeDiff > 5: #Send command every 5 seconds
+            sendCommands()
+            startingTime = time.time()
         time.sleep(1)
 
 main()
