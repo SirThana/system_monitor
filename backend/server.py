@@ -17,6 +17,7 @@ s.bind(serverAddress)
 s.listen(1)
 
 socketDict = {} # who : conn
+commandList = ['uptime', 'uname']
 
 
 #   --> Receives a socket, Accepts connections and appends them to the socketDict
@@ -33,15 +34,21 @@ def connHandler(socket, x):
 def sendCommands():
     for key in socketDict.keys():
         try:
-            x = "test message to : " , key
-            socketDict[key].send(pickle.dumps(str(x)))
-        except:
-            pass
+            socketDict[key].send(pickle.dumps(str(commandList[0])))
+            receive()
+        except Exception as e:
+            print(e)
  
  #  --> Should this start a thread for every socket in socketDict?
  #      what happens when more than one socket sends to this server?
-def recvCommand():
-    pass
+def receive():
+    for key in socketDict.keys():
+        try:
+            x = pickle.loads(socketDict[key].recv(2048))
+            print(x)
+        except Exception as e:
+            print(e)
+            time.sleep(1)
 
 
 def main():

