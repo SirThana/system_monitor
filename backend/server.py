@@ -2,15 +2,17 @@ import socket
 import time
 import pickle
 import threading
-import pdb
 
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
 #TODO
 #   1.  Have the server send a command at a fixed time interval and immediately expect the ouput
 
+
+HVA = '145.109.173.68'
+l = 'localhost'
 s = socket.socket()
-serverAddress = ('localhost', 1111)
+serverAddress = l, 1111
 s.bind(serverAddress)
 s.listen(1)
 
@@ -18,6 +20,7 @@ socketDict = {} # who : conn
 
 
 #   --> Receives a socket, Accepts connections and appends them to the socketDict
+#       x is a dummy value because "Threading"
 def connHandler(socket, x):
     while True:
         try:
@@ -26,6 +29,7 @@ def connHandler(socket, x):
         except Exception as e:
             print(e)
 
+#   --> Sends commands to every socket in the socketDict
 def sendCommands():
     for key in socketDict.keys():
         try:
@@ -33,7 +37,11 @@ def sendCommands():
             socketDict[key].send(pickle.dumps(str(x)))
         except:
             pass
-    
+ 
+ #  --> Should this start a thread for every socket in socketDict?
+ #      what happens when more than one socket sends to this server?
+def recvCommand():
+    pass
 
 
 def main():
