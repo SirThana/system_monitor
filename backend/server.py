@@ -9,7 +9,7 @@ import mysql.connector as mysql
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
 #TODO
-#   1.  line 57 should right after accepting a connection, send the keyvalues to
+#   1.  line 60 should right after accepting a connection, send the keyvalues to
 #       the connected client. Client should catch this and use this keypair for futher
 #       communication
 
@@ -17,7 +17,7 @@ import mysql.connector as mysql
 HVA = '145.109.151.121'
 l = 'localhost'
 s = socket.socket()
-serverAddress = HVA, 1111
+serverAddress = l, 1111
 s.bind(serverAddress)
 s.listen(1)
 
@@ -56,8 +56,9 @@ def connHandler(socket, x):
     while True:
         try:
             conn, addr = socket.accept()
-            key = generateKeys(8)
+            key = generateKeys(8) #Generate keypair
             socketDict.update({pickle.loads(conn.recv(2048)) : [conn, key]})
+            conn.send(pickle.dumps(key)) 
         except Exception as e:
             print(e)
 
@@ -70,7 +71,9 @@ def sendCommands():
                 receive(key)
             except Exception as e:
                 print(e)
-    print(resultDict)
+
+    print("results: ",resultDict)
+    print("connections: ",socketDict)
  
 #   --> Receives something from a socket, key is the key in socketDict.
 #       socketDict[key][0] is a socket, 1 and 2 are keys
@@ -109,9 +112,8 @@ def main():
     startingTime = time.time()
     while True:
         timeDiff = time.time() - startingTime
-        #print(socketDict.keys())
-        print(socketDict)
         if timeDiff > 5: #Send command every 5 seconds
+            print(key)
             sendCommands()
             startingTime = time.time()
         time.sleep(1)

