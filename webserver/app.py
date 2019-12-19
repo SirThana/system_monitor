@@ -16,12 +16,12 @@ def index():
         difference = currentTime - lastTime
         if difference > 1:
             mydb = mysql.connector.connect(
-            host="192.168.157.130",
-            user="admin",
-            passwd="Welkom123!",
-            database="statistics")
+            host="145.109.164.133",
+            user="tester",
+            passwd="P@ssword",
+            database="TESTMAU")
             cursor = mydb.cursor()
-            getUptime = "SELECT * FROM statistics;"
+            getUptime = "SELECT * FROM Data;"
             cursor.execute(getUptime)
             uptime = cursor.fetchall()
             print(uptime)
