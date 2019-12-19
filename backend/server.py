@@ -2,7 +2,7 @@ import socket
 import time
 import pickle
 import threading
-
+import mysql.connector as mysql
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
 #TODO
@@ -54,6 +54,24 @@ def receive():
         except Exception as e:
             print(e)
             time.sleep(1)
+
+def connDatabase(resultDict):
+    db = mysql.connect(host="localhost",
+                                user="tester",
+                                passwd="P@ssword",
+                                database = "TESTMAU"
+    )
+
+    
+    if db.is_connected():
+        db_version = db.get_server_info()
+        print("MySQL Database Connected: " + db_version)
+        cursor = db.cursor(buffered=True)
+        cursor.execute("INSERT INTO Data (Time) VALUES ('{}')".format(resultDict)) 
+        db.commit()
+
+connDatabase(resultDict)
+     
 
 
 def main():
