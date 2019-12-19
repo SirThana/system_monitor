@@ -28,7 +28,6 @@ def send(socket, payload):
         time.sleep(1)
         
 
-
 def receive(socket):
     try:
         message = pickle.loads(socket.recv(2048))

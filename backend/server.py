@@ -6,7 +6,7 @@ import threading
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
 #TODO
-#   1.  Have the server send a command at a fixed time interval and immediately expect the ouput
+#   1.  All the output from the clients, sort it out in a dict for later writing to a DB
 
 
 HVA = '145.109.173.68'
@@ -17,7 +17,9 @@ s.bind(serverAddress)
 s.listen(1)
 
 socketDict = {} # who : conn
-commandList = ['uptime', 'uname']
+commandList = ['uptime', 'uname', 'pwd']
+global resultDict
+resultDict = {} #Holds who : [results] 
 
 
 #   --> Receives a socket, Accepts connections and appends them to the socketDict
@@ -33,19 +35,22 @@ def connHandler(socket, x):
 #   --> Sends commands to every socket in the socketDict
 def sendCommands():
     for key in socketDict.keys():
-        try:
-            socketDict[key].send(pickle.dumps(str(commandList[0])))
-            receive()
-        except Exception as e:
-            print(e)
+        for command in commandList:
+            try:
+                socketDict[key].send(pickle.dumps(str(command)))
+                receive()
+            except Exception as e:
+                print(e)
+    print(resultDict)
  
  #  --> Should this start a thread for every socket in socketDict?
  #      what happens when more than one socket sends to this server?
 def receive():
     for key in socketDict.keys():
+        resultDict.update({key : []})
         try:
             x = pickle.loads(socketDict[key].recv(2048))
-            print(x)
+            resultDict[key].append(x)
         except Exception as e:
             print(e)
             time.sleep(1)
