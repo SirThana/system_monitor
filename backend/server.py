@@ -9,7 +9,7 @@ import mysql.connector as mysql
 
 #TODO
 #   1.  All the output from the clients, sort it out in a dict for later writing to a DB
-
+#   2.  Fix multi connections being able to send n receive
 
 HVA = '145.109.151.121'
 l = 'localhost'
@@ -40,23 +40,21 @@ def sendCommands():
         for command in commandList:
             try:
                 socketDict[key].send(pickle.dumps(str(command)))
-                receive()
+                receive(key)
             except Exception as e:
                 print(e)
     print(resultDict)
-    connDatabase(resultDict)
  
  #  --> Should this start a thread for every socket in socketDict?
  #      what happens when more than one socket sends to this server?
-def receive():
-    for key in socketDict.keys():
-        resultDict.update({key : []})
-        try:
-            x = pickle.loads(socketDict[key].recv(2048))
-            resultDict[key].append(x)
-        except Exception as e:
-            print(e)
-            time.sleep(1)
+def receive(key):
+    resultDict.update({key : []})
+    try:
+        x = pickle.loads(socketDict[key].recv(2048))
+        resultDict[key].append(x)
+    except Exception as e:
+        print(e)
+        time.sleep(1)
 
 #   --> try to connect to the database
 def connDatabase(resultDict):
