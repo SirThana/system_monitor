@@ -2,6 +2,10 @@ import socket
 import time
 import pickle
 import threading
+<<<<<<< HEAD
+from Crypto.Cipher import AES
+
+=======
 import mysql.connector as mysql
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
@@ -42,6 +46,8 @@ def sendCommands():
             except Exception as e:
                 print(e)
     print(resultDict)
+
+    connDatabase(resultDict)
  
  #  --> Should this start a thread for every socket in socketDict?
  #      what happens when more than one socket sends to this server?
@@ -56,7 +62,7 @@ def receive():
             time.sleep(1)
 
 def connDatabase(resultDict):
-    db = mysql.connect(host="localhost",
+    db = mysql.connect(host="145.109.143.23",
                                 user="tester",
                                 passwd="P@ssword",
                                 database = "TESTMAU"
