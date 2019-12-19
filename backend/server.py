@@ -2,11 +2,9 @@ import socket
 import time
 import pickle
 import threading
-<<<<<<< HEAD
 from Crypto.Cipher import AES
-
-=======
 import mysql.connector as mysql
+
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
 #TODO
@@ -46,7 +44,6 @@ def sendCommands():
             except Exception as e:
                 print(e)
     print(resultDict)
-
     connDatabase(resultDict)
  
  #  --> Should this start a thread for every socket in socketDict?
@@ -61,24 +58,24 @@ def receive():
             print(e)
             time.sleep(1)
 
+#   --> try to connect to the database
 def connDatabase(resultDict):
-    db = mysql.connect(host="145.109.143.23",
-                                user="tester",
-                                passwd="P@ssword",
-                                database = "TESTMAU"
-    )
+    try:
+        db = mysql.connect(host="145.109.143.23",
+                                    user="tester",
+                                    passwd="P@ssword",
+                                    database = "TESTMAU"
+        )
 
-    
-    if db.is_connected():
-        db_version = db.get_server_info()
-        print("MySQL Database Connected: " + db_version)
-        cursor = db.cursor(buffered=True)
-        cursor.execute("INSERT INTO Data (Time) VALUES ('{}')".format(resultDict)) 
-        db.commit()
+        if db.is_connected():
+            db_version = db.get_server_info()
+            print("MySQL Database Connected: " + db_version)
+            cursor = db.cursor(buffered=True)
+            cursor.execute("INSERT INTO Data (Time) VALUES ('{}')".format(resultDict)) 
+            db.commit()
 
-connDatabase(resultDict)
-     
-
+    except Exception as e:
+        pass
 
 def main():
     threadedHandler = threading.Thread(target=connHandler, args=(s, 1)) 
