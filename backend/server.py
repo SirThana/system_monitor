@@ -9,7 +9,11 @@ import mysql.connector as mysql
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
 #TODO
-#   1.  socketDict should hold who : [socket, key[0], key[1]]
+#   1.  line 57 should right after accepting a connection, send the keyvalues to
+#       the connected client. Client should catch this and use this keypair for futher
+#       communication
+
+
 HVA = '145.109.151.121'
 l = 'localhost'
 s = socket.socket()
@@ -68,8 +72,8 @@ def sendCommands():
                 print(e)
     print(resultDict)
  
- #  --> Should this start a thread for every socket in socketDict?
- #      what happens when more than one socket sends to this server?
+#   --> Receives something from a socket, key is the key in socketDict.
+#       socketDict[key][0] is a socket, 1 and 2 are keys
 def receive(key):
     resultDict.update({key : []})
     try:
