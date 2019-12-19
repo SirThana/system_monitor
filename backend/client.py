@@ -8,7 +8,6 @@ from Crypto.Cipher import AES
 #||||||||||||||||||||||||||||||CLIENT||||||||||||||||||||||||||
 
 #TODO
-#   1.  At line 34, have the client execute whatever it receives and send it back to the server
 
 
 socket = socket.socket()

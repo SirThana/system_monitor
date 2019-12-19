@@ -7,7 +7,6 @@ from Crypto.Cipher import AES
 
 =======
 import mysql.connector as mysql
->>>>>>> 6015234aee8288c9aaa16313dad553e06a782257
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
 #TODO
