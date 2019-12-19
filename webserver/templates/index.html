@@ -2,12 +2,20 @@
 
 <head>
     <title>System Monitoring</title>
+    <meta http-equiv="refresh" content="3">
 </head>
 
 
 <body>
     <h1>System Monitor</h1>
+    <h3>{% for item in data %}</h3>
+    <h3>Statistic ID: {{item[0]}}</h3>
+    <h3>Uptime: {{item[1]}}</h3>
+    <h3>Hostname: {{item[2]}}</h3>
+    <h3>IP Address: {{item[3]}}</h3>
+    <h3>{% endfor %}</h3>
 </body>
 
+<script src="script.js"></script>
 
 </html>
