@@ -21,7 +21,7 @@ def index():
             passwd="Welkom123!",
             database="statistics")
             cursor = mydb.cursor()
-            getUptime = "SELECT * FROM statistics;"
+            getUptime = "SELECT * FROM statis••••••tics;"
             cursor.execute(getUptime)
             uptime = cursor.fetchall()
             print(uptime)
