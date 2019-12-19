@@ -14,14 +14,14 @@ def index():
     while True:
         currentTime = time.time()
         difference = currentTime - lastTime
-        if difference > 0.5:
+        if difference > 1:
             mydb = mysql.connector.connect(
             host="192.168.157.130",
             user="admin",
             passwd="Welkom123!",
             database="statistics")
             cursor = mydb.cursor()
-            getUptime = "SELECT * FROM statis••••••tics;"
+            getUptime = "SELECT * FROM statistics;"
             cursor.execute(getUptime)
             uptime = cursor.fetchall()
             print(uptime)

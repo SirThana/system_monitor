@@ -2,6 +2,10 @@ import socket
 import time
 import pickle
 import threading
+<<<<<<< HEAD
+from Crypto.Cipher import AES
+
+=======
 import mysql.connector as mysql
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
