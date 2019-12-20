@@ -90,22 +90,19 @@ def receive(key):
 
 #   --> try to connect to the database
 def connDatabase(resultDict):
-    try:
-        db = mysql.connect(host="145.109.143.23",
-                                    user="tester",
-                                    passwd="P@ssword",
-                                    database = "TESTMAU"
-        )
 
-        if db.is_connected():
-            db_version = db.get_server_info()
-            print("MySQL Database Connected: " + db_version)
-            cursor = db.cursor(buffered=True)
-            cursor.execute("INSERT INTO Data (Time) VALUES ('{}')".format(resultDict)) 
-            db.commit()
+    db = mysql.connect(host="145.109.143.23",
+                                user="tester",
+                                passwd="P@ssword",
+                                database = "TESTMAU"
+    )
 
-    except Exception as e:
-        pass
+    if db.is_connected():
+        db_version = db.get_server_info()
+        print("MySQL Database Connected: " + db_version)
+        cursor = db.cursor(buffered=True)
+        cursor.execute("INSERT INTO Data (Time) VALUES ('{}')".format(resultDict)) 
+        db.commit()
 
 def main():
 
