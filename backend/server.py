@@ -20,7 +20,7 @@ s.bind(serverAddress)
 s.listen(1)
 
 socketDict = {} # who : conn
-commandList = ['uname']
+commandList = ['uname', 'uptime']
 global resultDict
 resultDict = {} #Holds who : [results] 
 global key
@@ -55,8 +55,10 @@ def connHandler(socket, x):
         try:
             conn, addr = socket.accept() #accept connection
             key = generateKeys(16) #Generate keypair
-            socketDict.update({pickle.loads(conn.recv(2048)) : [conn, key]}) #store key
+            who = pickle.loads(conn.recv(2048))
+            socketDict.update({who : [conn, key]}) #store key
             conn.send(pickle.dumps(key)) #send key
+            resultDict.update({who : []})
         except Exception as e:
             print(e)
 
@@ -76,7 +78,6 @@ def sendCommands():
 #   --> Receives something from a socket, key is the key in socketDict.
 #       socketDict[key][0] is a socket, 1 and 2 are keys
 def receive(key):
-    resultDict.update({key : []})
     try:
         x = pickle.loads(socketDict[key][0].recv(2048)) #Deserialize
         x = decryptAES(x, socketDict[key][1][0], socketDict[key][1][1]) #Decrypt
