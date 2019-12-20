@@ -13,7 +13,7 @@ from Crypto.Cipher import AES
 socket = socket.socket()
 HVA = '145.109.151.121'
 l = 'localhost'
-serverAddress = l, 1111
+serverAddress = l, 2222
 
 global key
 key = []

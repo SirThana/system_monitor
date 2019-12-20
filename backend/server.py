@@ -18,7 +18,7 @@ import mysql.connector as mysql
 HVA = '145.109.151.121'
 l = 'localhost'
 s = socket.socket()
-serverAddress = l, 1111
+serverAddress = l, 2222
 s.bind(serverAddress)
 s.listen(1)
 
@@ -70,12 +70,13 @@ def sendCommands():
             try:
                 socketDict[key][0].send(pickle.dumps(encryptAES(command, socketDict[key][1][0], socketDict[key][1][1])))
                 receive(key)
+                
             except Exception as e:
                 print(e)
 
     print("results: ",resultDict)
-    print("connections: ",socketDict)
- 
+
+
 #   --> Receives something from a socket, key is the key in socketDict.
 #       socketDict[key][0] is a socket, 1 and 2 are keys
 def receive(key):
@@ -88,21 +89,23 @@ def receive(key):
         print(e)
         time.sleep(1)
 
-#   --> try to connect to the database
-def connDatabase(resultDict):
 
-    db = mysql.connect(host="145.109.143.23",
+
+#   --> try to connect to the database
+def connDatabase(socketDict):
+    db = mysql.connect(host="localhost",
                                 user="tester",
                                 passwd="P@ssword",
                                 database = "TESTMAU"
     )
-
     if db.is_connected():
         db_version = db.get_server_info()
         print("MySQL Database Connected: " + db_version)
         cursor = db.cursor(buffered=True)
-        cursor.execute("INSERT INTO Data (Time) VALUES ('{}')".format(resultDict)) 
+        # cursor.execute("INSERT INTO Data (Time) VALUES ('{}')".format()) 
         db.commit()
+
+connDatabase(socketDict)
 
 def main():
 
