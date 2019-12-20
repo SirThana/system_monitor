@@ -11,9 +11,9 @@ from Crypto.Cipher import AES
 
 
 socket = socket.socket()
-HVA = '145.109.151.121'
+HVA = '145.109.148.241'
 l = 'localhost'
-serverAddress = l, 1111
+serverAddress = HVA, 1111
 
 global key
 key = []
