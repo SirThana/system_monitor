@@ -10,9 +10,6 @@ import mysql.connector as mysql
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
 #TODO
-#   1.  line 60 should right after accepting a connection, send the keyvalues to
-#       the connected client. Client should catch this and use this keypair for futher
-#       communication
 
 
 HVA = '145.109.151.121'
