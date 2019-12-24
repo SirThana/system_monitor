@@ -12,20 +12,30 @@ import mysql.connector as mysql
 
 #TODO
 #   1.  Maybe do something with checksums
+#https://stackoverflow.com/questions/26851034/opening-a-ssl-socket-connection-in-python
 
 
 HVA = '145.109.151.121'
 l = 'localhost'
-s = socket.socket()
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverAddress = l, 1111
 s.bind(serverAddress)
 s.listen(1)
 
 socketDict = {} # who : [conn, [key1, key2]]
-commandList = ['uname', 'uptime', 'pwd']
+commandList = ['uname', 'uptime', 'df -h']
 global resultDict
 resultDict = {} #Holds who : [{COMMAND : RESULT}] 
 
+#   --> p and q are dummy values to call for in a thread
+def readValues(p, q):
+    while True:
+        for key in resultDict.keys():
+            print(key)
+            for command in resultDict[key]:
+                print(command)
+        time.sleep(1)
+    
 
 def encryptAES(message, key, key2):
     obj = AES.new(key, AES.MODE_CFB, key2)
@@ -37,6 +47,7 @@ def decryptAES(ciphertext, key, key2):
     obj2 = AES.new(key, AES.MODE_CFB, key2)
     message = obj2.decrypt(ciphertext)
     return message
+
 
 #   --> Generates a list of 2 keys based on a given keySize (Default 16).
 #       All ASCII printable symbols
@@ -75,8 +86,6 @@ def sendCommands():
             except Exception as e:
                 print(e)
 
-    print("connections: ",socketDict)
-
 
 #   --> Receives something from a socket, key is the key in socketDict.
 #       socketDict[key][0] is a socket, [1][0] and [1][1] are keys
@@ -113,6 +122,9 @@ def connDatabase(resultDict):
 def main():
 
     threadedHandler = threading.Thread(target=connHandler, args=(s, 1)) 
+    threadedHandler.start()
+
+    threadedHandler = threading.Thread(target=readValues, args=(s, 1)) 
     threadedHandler.start()
 
     startingTime = time.time()

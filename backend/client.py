@@ -8,11 +8,12 @@ from Crypto.Cipher import AES
 #||||||||||||||||||||||||||||||CLIENT||||||||||||||||||||||||||
 
 #TODO
+#https://stackoverflow.com/questions/26851034/opening-a-ssl-socket-connection-in-python
 
 
 HVA = '145.109.148.241'
 l = 'localhost'
-socket = socket.socket()
+socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverAddress = l, 1111
 
 global key
