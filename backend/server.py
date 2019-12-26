@@ -5,7 +5,6 @@ import threading
 import random
 import pdb
 from Crypto.Cipher import AES
-import mysql.connector as mysql
 from flask import Flask, jsonify
 
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
@@ -26,11 +25,12 @@ s.listen(1)
 app = Flask(__name__)
 
 socketDict = {} # who : [conn, [key1, key2]]
-commandList = ['uname', 'uptime', 'df -h']
+commandList = ['uname', 'uptime', 'df -h'] #List of commands to execute
 global resultDict
 resultDict = {} #Holds who : [{COMMAND : RESULT}] 
 
 
+#   --> p and q are dummy parameters, necessary to start a thread for some reason
 def startFlask(p, q):
     app.run()
 
@@ -38,15 +38,6 @@ def startFlask(p, q):
 #   --> takes a GET request with a WHO, returns all existing records of that machine
 @app.route('/<uname>', methods=['GET'])
 def APIGET(uname):
-#    while True:
-#        for key in resultDict.keys():
-#            if str(key) == str(uname):
-#                return jsonify(resultDict)
-#
-#                for command in resultDict[key]:
-#                    print(command)
-#                    return str(command)
-#    return str(resultDict.keys())
     return (jsonify(resultDict[uname]))
     
 
@@ -119,25 +110,6 @@ def receive(key):
         return(resultDict[key].append(x))
 
     #Catch network related errors
-    except Exception as e:
-        print(e)
-
-#   --> try to connect to the database
-def connDatabase(resultDict):
-    try:
-        db = mysql.connect(host="145.109.143.23",
-                                    user="tester",
-                                    passwd="P@ssword",
-                                    database = "TESTMAU"
-        )
-
-        if db.is_connected():
-            db_version = db.get_server_info()
-            print("MySQL Database Connected: " + db_version)
-            cursor = db.cursor(buffered=True)
-            cursor.execute("INSERT INTO Data (Time) VALUES ('{}')".format(resultDict)) 
-            db.commit()
-
     except Exception as e:
         print(e)
 
