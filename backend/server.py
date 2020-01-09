@@ -32,7 +32,7 @@ resultDict = {} #Holds who : [{COMMAND : RESULT}]
 
 #   --> p and q are dummy parameters, necessary to start a thread for some reason
 def startFlask(p, q):
-    app.run(host= '0.0.0.0')
+    app.run(host= '0.0.0.0', port=2222)
 
 
 #   --> takes a GET request with a WHO, returns all existing records of that machine
