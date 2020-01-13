@@ -38,7 +38,7 @@ def popenExecution(data):
     #pdb.set_trace()
     command = subprocess.Popen(data, shell=True, stdout=subprocess.PIPE, 
     stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-    return str(command.stdout.read() + command.stderr.read())
+    return str(command.stdout.read() + command.stderr.read(), 'utf-8')
 
 
 #   --> Send a payload to the server, serializes into an encryption
