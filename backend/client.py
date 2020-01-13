@@ -14,7 +14,7 @@ from Crypto.Cipher import AES
 HVA = '145.109.171.88'
 l = 'localhost'
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverAddress = HVA, 6666
+serverAddress = l, 9999
 
 global key
 key = []
