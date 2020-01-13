@@ -19,7 +19,7 @@ from flask import Flask, jsonify
 HVA = '145.109.171.88'
 l = 'localhost'
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverAddress = l, 9999
+serverAddress = HVA, 9999
 s.bind(serverAddress)
 s.listen(1)
 app = Flask(__name__)
