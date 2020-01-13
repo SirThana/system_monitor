@@ -16,10 +16,10 @@ from flask import Flask, jsonify
 
 
 #Set variables
-HVA = '145.109.171.88'
+HVA = '145.28.150.217'
 l = 'localhost'
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverAddress = HVA, 9999
+serverAddress = l, 5555
 s.bind(serverAddress)
 s.listen(1)
 app = Flask(__name__)
@@ -32,7 +32,7 @@ resultDict = {} #Holds who : [{COMMAND : RESULT}]
 
 #   --> p and q are dummy parameters, necessary to start a thread for some reason
 def startFlask(p, q):
-    app.run(host= 'localhost', port=5555)
+    app.run(host= 'localhost', port=8888)
 
 
 #   --> takes a GET request with a WHO, returns all existing records of that machine
