@@ -27,12 +27,11 @@
           </tr>
         </thead>
         <tbody>
-          {% for user in id %}
+          {% for who in user %}
             {% for item in machine %}
               {% for elem in uptime %}
-          
           <tr>
-            <th scope="row">{{ user }}</th>
+            <th scope="row">{{who}}</th>
             <td>{{item}}</td>
             <td>{{elem}}</td>
             <td>x</td>

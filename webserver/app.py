@@ -9,15 +9,15 @@ app = Flask(__name__, static_folder="static")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    response = requests.get("http://0.0.0.0:4444/&&/")
+    response = requests.get("http://0.0.0.0:5555/&&/")
     data = response.json()
     machine = []
     uptime = []
     user = []
 
-    for id in data:
-        user.append(id)
-        for couple in data[id]:
+    for who in data:
+        user.append(who)
+        for couple in data[who]:
             for key, value in couple.items():
                 if 'uname' in key:
                     machine.append(value)
