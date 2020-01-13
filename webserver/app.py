@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import *
-import mysql.connector
+import requests
 import time
 import pdb
 
@@ -9,24 +9,22 @@ app = Flask(__name__, static_folder="static")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    lastTime = time.time()
-    print(lastTime)
-    while True:
-        currentTime = time.time()
-        difference = currentTime - lastTime
-        if difference > 1:
-            mydb = mysql.connector.connect(
-            host="145.109.164.133",
-            user="tester",
-            passwd="P@ssword",
-            database="TESTMAU")
-            cursor = mydb.cursor()
-            getUptime = "SELECT * FROM Data;"
-            cursor.execute(getUptime)
-            uptime = cursor.fetchall()
-            print(uptime)
-            lastTime = time.time()
-            return render_template('index.html', data=uptime)
+    response = requests.get("http://0.0.0.0:4444/&&/")
+    data = response.json()
+    machine = []
+    uptime = []
+
+    for user in data:
+        for couple in data[user]:
+            for key, value in couple.items():
+                if 'uname' in key:
+                    machine.append(value)
+                if 'uptime' in key:
+                    uptime.append(value)
+
+    print(machine)
+    print(uptime)
+    return render_template('index.html', machine=machine, uptime=uptime)
 
 def main():
     app.run(host="localhost", debug=True)

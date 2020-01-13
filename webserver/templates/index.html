@@ -3,35 +3,49 @@
 <head>
     <title>System Monitoring</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
-    <meta http-equiv="refresh" content="1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 </head>
 
-
 <body>
-    <h1>System Monitor</h1>
-    <table>
-        <h3>{% for item in data %}</h3>
-        <tr>
-          <th>Hostname</th>
-          <th>IP Address</th>
-          <th>OS</th>
-          <th>Uptime</th>
-          <th>CPU load</th>
-          <th>Disk Usage</th>
-          <th>Temperature</th>
-          <th>RAM Usage</th>
-        </tr>
-        <tr>
-          <td>{{item[2]}}</td>
-          <td>{{item[3]}}</td>
-          <td></td>
-          <td>{{item[1]}}</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <h3>{% endfor %}</h3>
+    <div class="head">
+        <h2>Qebbi System Information Dashboard</h2>
+        <hr>
+    </div>  
+
+    <div class="info">
+    <table class="table">
+      
+        <thead>
+          <tr>
+            <th scope="col">Machine</th>
+            <th scope="col">Uptime</th>
+            <th scope="col">CPU load</th>
+            <th scope="col">RAM usage</th>
+            <th scope="col">DISK usage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in machine %}
+            {% for elem in uptime %}
+          <tr>
+            <th scope="row">{{item}}</th>
+            <td>{{elem}}</td>
+            <td>x</td>
+            <td>x</td>
+            <td>x</td>
+            <td>x</td>
+          </tr>
+          {% endfor %}
+          {% endfor %}
+        </tbody>
       </table>
-    </body>
+    </div>
+  
+    <button class="logs">Logs</button>
+    <br>
+    <br>
+    <button class="logs">Logs</button>
+
+</body>
 </html>

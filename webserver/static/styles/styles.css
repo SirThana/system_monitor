@@ -1,15 +1,26 @@
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #dddddd;
-  }
+
+
+.head {
+  padding-left: 20px;
+  padding-top: 20px;
+  font-size: 25px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.info {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.logs {
+  width: 200px;
+  height: 40px;
+  position: absolute;
+  left: 45%;
+  border: none;
+}
+
+.logs:hover{
+  background-color: blanchedalmond;
+  transition: 1s;
+}
