@@ -35,6 +35,7 @@ def decryptAES(ciphertext, key):
 
 #   --> Execute a command and return the result of it
 def popenExecution(data):
+    #pdb.set_trace()
     command = subprocess.Popen(data, shell=True, stdout=subprocess.PIPE, 
     stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     return str(command.stdout.read() + command.stderr.read())
