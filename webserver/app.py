@@ -9,7 +9,7 @@ app = Flask(__name__, static_folder="static")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    response = requests.get("http://0.0.0.0:4444/&&/")
+    response = requests.get("http://localhost:4444/&&/")
     data = response.json()
     machine = []
     uptime = []
