@@ -14,9 +14,10 @@ def index():
     machine = []
     uptime = []
     user = []
+
     for id in data:
         user.append(id)
-        for couple in data[user]:
+        for couple in data[id]:
             for key, value in couple.items():
                 if 'uname' in key:
                     machine.append(value)
