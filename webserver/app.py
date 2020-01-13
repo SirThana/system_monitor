@@ -13,8 +13,9 @@ def index():
     data = response.json()
     machine = []
     uptime = []
-
-    for user in data:
+    user = []
+    for id in data:
+        user.append(id)
         for couple in data[user]:
             for key, value in couple.items():
                 if 'uname' in key:
