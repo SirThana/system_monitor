@@ -18,6 +18,7 @@
       
         <thead>
           <tr>
+            <th scope="col">Identifier</th>
             <th scope="col">Machine</th>
             <th scope="col">Uptime</th>
             <th scope="col">CPU load</th>
@@ -27,15 +28,17 @@
         </thead>
         <tbody>
           {% for item in machine %}
-            {% for elem in uptime %}
+          {% for elem in uptime %}
+          {% for x in user %}
           <tr>
-            <th scope="row">{{item}}</th>
+            <th scope="row">{{x}}</th>
+            <td>{{item}}</td>
             <td>{{elem}}</td>
             <td>x</td>
             <td>x</td>
             <td>x</td>
-            <td>x</td>
           </tr>
+          {% endfor %}
           {% endfor %}
           {% endfor %}
         </tbody>

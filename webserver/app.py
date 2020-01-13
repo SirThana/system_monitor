@@ -24,7 +24,7 @@ def index():
 
     print(machine)
     print(uptime)
-    return render_template('index.html', machine=machine, uptime=uptime)
+    return render_template('index.html', machine=machine, uptime=uptime, user=user)
 
 def main():
     app.run(host="localhost", debug=True)
