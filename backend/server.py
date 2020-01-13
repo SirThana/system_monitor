@@ -102,7 +102,7 @@ def receive(key):
         x = socketDict[key][0].recv(2048)
         x = decryptAES(x, socketDict[key][1][0], socketDict[key][1][1]) #Decrypt
         x = pickle.loads(x) # {COMMAND : RESULT}
-        x = { key.decode(): val.strip('\n') for key, val in x.items() } #Remove garbage b and \n
+        x = { key.decode(): val.strip('\n') for key, val in x.items() } #Decode keys and \n
 
         #Update existing records with current values for same keys, append non existing record
         for idx, dict in enumerate(resultDict[key]):
