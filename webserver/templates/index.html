@@ -15,7 +15,6 @@
 
     <div class="info">
     <table class="table">
-      
         <thead>
           <tr>
             <th scope="col">Identifier</th>
@@ -26,22 +25,18 @@
             <th scope="col">DISK usage</th>
           </tr>
         </thead>
-        <tbody>
-          {% for who in user %}
-            {% for item in machine %}
-              {% for elem in uptime %}
+          <tbody>
+            {% for id in data %}
           <tr>
-            <td>{{who}}</td>
-            <td>{{item}}</td>
-            <td>{{elem}}</td>
-            <td>x</td>
-            <td>x</td>
-            <td>x</td>
-          </tr>
+            <td>{{id}}</td>
+            {% for elem in data[id] %}
+              {% for key, value in elem.items() %}
+            <td>{{value}}</td>
               {% endfor %}
             {% endfor %}
-          {% endfor %}
+          </tr> 
         </tbody>
+        {% endfor %}
       </table>
     </div>
   
