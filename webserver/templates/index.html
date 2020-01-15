@@ -4,7 +4,7 @@
     <title>System Monitoring</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <meta http-equiv="refresh" content="2";>
+    <meta http-equiv="refresh" content="1";>
 
 
 </head>
@@ -22,18 +22,18 @@
             <th scope="col">Identifier</th>
             <th scope="col">Machine</th>
             <th scope="col">Uptime</th>
-            <th scope="col">CPU load</th>
-            <th scope="col">RAM usage</th>
+            <th scope="col">CPU load (%)</th>
+            <th scope="col">RAM usage (%)</th>
             <th scope="col">DISK usage</th>
           </tr>
         </thead>
           <tbody>
             {% for id in data %}
           <tr>
-            <td>{{id}}</td>
+            <td><span class="badge badge-primary">{{id}}</span></td>
             {% for elem in data[id] %}
               {% for key, value in elem.items() %}
-            <td>{{value}}</td>
+            <td><span class="badge badge-success">{{value}}</span></td>
               {% endfor %}
             {% endfor %}
           </tr> 

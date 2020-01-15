@@ -19,13 +19,13 @@ from flask import Flask, jsonify
 HVA = '145.109.175.123'
 l = 'localhost'
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverAddress = HVA, 5555
+serverAddress = l, 5555
 s.bind(serverAddress)
 s.listen(1)
 app = Flask(__name__)
 
 socketDict = {} # who : [conn, [key1, key2]]
-commandList = ['uname', 'uptime -p', "top -bn2 | awk '/%Cpu/ {print $2}'", "free -m | awk '/Mem:/ {print $3 / $2 * 100}'"] #List of commands to execute
+commandList = ['uname', 'uptime -p', "top -bn1 | awk '/%Cpu/ {print $2}'", "free -m | awk '/Mem:/ {print $3 / $2 * 100}'"] #List of commands to execute
 global resultDict
 resultDict = {} #Holds who : [{COMMAND : RESULT}] 
 
