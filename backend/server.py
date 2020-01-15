@@ -27,7 +27,8 @@ app = Flask(__name__)
 #cpu = "top -bn1 | awk '/%Cpu/ {print $2}'"
 
 socketDict = {} # who : [conn, [key1, key2]]
-commandList = ['uname', 'uptime -p', "top -bn1 | awk '/%Cpu/ {print $2}'","free -m | awk '/Mem:/ {print $3 / $2 * 100}'","df -h --output='avail' / | awk 'NR==2'" ,"ps aux | wc -l", "ps -eo nlwp | tail -n +2 | awk '{ num_threads += $1 } END { print num_threads }'"] #List of commands to execute
+commandList = ['uname', 'uptime -p', "top -bn1 | awk '/%Cpu/ {print $2}'","free -m | awk '/Mem:/ {print $3 / $2 * 100}'","df -h --output='avail' / | awk 'NR==2'" ,"ps aux | wc -l", "ps -eo nlwp | tail -n +2 | awk '{ num_threads += $1 } END { print num_threads }'", "hostname -I | awk '{print $1}'
+"] #List of commands to execute
 global resultDict
 resultDict = {} #Holds who : [{COMMAND : RESULT}] 
 
