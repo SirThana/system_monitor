@@ -26,7 +26,15 @@
 }
 
 .alert {
-  width: 300px;
+  width: 500px;
   text-align: center;
-  left: 40%;
+  margin-left: 30px;
+}
+
+.alerts {
+  margin-top: 500px;
+}
+
+footer {
+  text-align: center;
 }
