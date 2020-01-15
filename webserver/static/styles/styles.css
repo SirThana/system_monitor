@@ -3,7 +3,7 @@
 .head {
   padding-left: 20px;
   padding-top: 20px;
-  font-size: 25px;
+  font-size: 23px;
   font-family: Arial, Helvetica, sans-serif;
   font-style: italic;
 }
@@ -11,19 +11,6 @@
 .info {
   padding-left: 30px;
   padding-right: 30px;
-}
-
-.logs {
-  width: 200px;
-  height: 40px;
-  position: absolute;
-  left: 45%;
-  border: none;
-}
-
-.logs:hover{
-  background-color: blanchedalmond;
-  transition: 1s;
 }
 
 .alert {
