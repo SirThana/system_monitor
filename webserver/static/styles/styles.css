@@ -39,3 +39,19 @@
 footer {
   text-align: center;
 }
+
+.btn-danger{
+  float: right;
+  padding-top: 40px;
+  margin-right: 20px;
+}
+
+.btn-primary{
+  float: right;
+  padding-top: 40px;
+  margin-right: 20px;
+}
+
+table {
+  margin-top: 70px;
+}
