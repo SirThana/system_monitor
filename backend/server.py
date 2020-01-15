@@ -25,7 +25,7 @@ s.listen(1)
 app = Flask(__name__)
 
 socketDict = {} # who : [conn, [key1, key2]]
-commandList = ['uname', 'uptime -p', 'free -m'] #List of commands to execute
+commandList = ['uname', 'uptime -p', "top -bn2 | awk '/%Cpu/ {print $2}'", "free -m | awk '/Mem:/ {print $3 / $2 * 100}'"] #List of commands to execute
 global resultDict
 resultDict = {} #Holds who : [{COMMAND : RESULT}] 
 

@@ -14,5 +14,5 @@ def index():
     return render_template('index.html', data=data)
 
 def main():
-    app.run(host="localhost", debug=True)
+    app.run(host="localhost", debug=True) #Default port 5000
 main()
