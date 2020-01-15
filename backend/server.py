@@ -12,7 +12,7 @@ from flask import Flask, jsonify
 
 #TODO
 #   1.  Maybe do something with checksums
-#https://stackoverflow.com/questions/26851034/opening-a-ssl-socket-connection-in-python
+#       https://stackoverflow.com/questions/26851034/opening-a-ssl-socket-connection-in-python
 
 
 #Set variables
@@ -25,7 +25,7 @@ s.listen(1)
 app = Flask(__name__)
 
 socketDict = {} # who : [conn, [key1, key2]]
-commandList = ['uname', 'uptime -p'] #List of commands to execute
+commandList = ['uname', 'uptime -p', 'free -m'] #List of commands to execute
 global resultDict
 resultDict = {} #Holds who : [{COMMAND : RESULT}] 
 
@@ -67,7 +67,8 @@ def generateKeys(keySize):
     return key
 
 #   --> Receives a socket, Accepts connections and appends them to the socketDict
-#       x is a dummy value because "Threading"
+#       x is a dummy value because "Threading". Generates a keypair for that client
+#       Sends the keys to the client (Keys used for encrypting payloads)
 def connHandler(socket, x):
     while True:
         try:
