@@ -38,10 +38,10 @@
           <tbody>
             {% for id in data %}
           <tr>
-            <td><span class="badge badge-primary">{{id}}</span></td>
+            <td><h5><span class="badge badge-primary">{{id}}</span></h5></td>
             {% for elem in data[id] %}
               {% for key, value in elem.items() %}
-            <td><span class="badge badge-info">{{value}}</span></td>
+            <td><h5><span class="badge badge-info">{{value}}</span></h5></td>
               {% endfor %}
             {% endfor %}
           </tr> 
