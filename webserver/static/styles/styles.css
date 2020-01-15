@@ -24,3 +24,9 @@
   background-color: blanchedalmond;
   transition: 1s;
 }
+
+.alert {
+  width: 300px;
+  text-align: center;
+  left: 40%;
+}
