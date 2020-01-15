@@ -16,10 +16,10 @@ from flask import Flask, jsonify
 
 
 #Set variables
-HVA = '145.28.150.217'
+HVA = '145.109.175.123'
 l = 'localhost'
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverAddress = l, 5555
+serverAddress = HVA, 5555
 s.bind(serverAddress)
 s.listen(1)
 app = Flask(__name__)

@@ -4,6 +4,8 @@
     <title>System Monitoring</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta http-equiv="refresh" content="2";>
+
 
 </head>
 
@@ -39,8 +41,10 @@
         {% endfor %}
       </table>
     </div>
+
+    <div class="alerts">
     <div class="alert alert-primary" role="alert">
-      Version 1.1 rolled out! - <a href="#" class="alert-link">check</a>
+      Version 1.1 rolled out! - <a href="#" class="alert-link">check details</a>
     </div>
     <div class="alert alert-danger" role="alert">
       1 warning detected - <a href="#" class="alert-link">check it out</a>
@@ -48,5 +52,7 @@
     <div class="alert alert-warning" role="alert">
      Failed startup script at 192.168.22.1 - <a href="#" class="alert-link">check it out</a>
     </div>
+  </div>
 </body>
+<footer>Copyright © ClownSec</footer>
 </html>

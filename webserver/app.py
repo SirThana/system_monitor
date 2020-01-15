@@ -11,6 +11,7 @@ app = Flask(__name__, static_folder="static")
 def index():
     response = requests.get("http://0.0.0.0:8888/&&/")
     data = response.json()
+    
     return render_template('index.html', data=data)
 
 def main():
