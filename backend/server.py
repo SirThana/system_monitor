@@ -5,7 +5,7 @@ import threading
 import random
 import pdb
 from Crypto.Cipher import AES
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 #||||||||||||||||||||||||||||||SERVER||||||||||||||||||||||||||
 
@@ -40,6 +40,8 @@ def startFlask(p, q):
 #   --> takes a GET request with a WHO, returns all existing records of that machine
 @app.route('/<uname>/', methods=['GET'])
 def APIGET(uname):
+    if request.authorization and request.authorization.username != 'test' and request.authorization.password != 'test':
+        return None #Bad authentication
     if uname == "&&":
         return jsonify(resultDict)
     return (jsonify(resultDict[uname]))
