@@ -18,7 +18,7 @@ from flask import Flask, jsonify, request
 #Set variables
 HVA = '145.109.175.123'
 l = 'localhost'
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #TCP socket
 serverAddress = l, 5555
 s.bind(serverAddress)
 s.listen(1)

@@ -11,10 +11,10 @@ from Crypto.Cipher import AES
 #https://stackoverflow.com/questions/26851034/opening-a-ssl-socket-connection-in-python
 
 #Set variables
-HVA = '145.109.175.123'
+HVA = '145.109.162.239'
 l = 'localhost'
-socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-serverAddress = l, 5555
+socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #TCP socket
+serverAddress = HVA, 5555
 
 global key
 key = []
